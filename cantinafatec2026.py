@@ -94,3 +94,17 @@ class ItemConsumo:
 
     def calcular_subtotal(self):
         return self.__produto.preco_venda * self.__quantidade
+
+class Carrinho:
+    def __init__(self):
+        self.__itens = []
+
+    def adicionar_item(self, item_consumo):
+        self.__itens.append(item_consumo)
+
+    @property
+    def itens(self):
+        return self.__itens
+
+    def calcular_total(self):
+        return sum(item.calcular_subtotal() for item in self.__itens)
