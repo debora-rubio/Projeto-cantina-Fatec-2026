@@ -17,6 +17,9 @@
 # Para melhoria do código, ocultei getters e setters com @property e @setter, deixando o codigo mais limpo e elegante.
 
 from datetime import datetime
+import pickle
+
+# ---------------- CLASSES ----------------
 
 class Produto:
     def __init__(self, nome, preco_compra, preco_venda, data_compra, vencimento, quantidade):
@@ -31,12 +34,7 @@ class Produto:
     def nome(self):
         return self.__nome
 
-    @property
-    def vencimento(self):
-        return self.__vencimento
-
     def dias_para_vencer(self):
-        """Calcula quantos dias faltam para o vencimento"""
         vencimento_dt = datetime.strptime(self.__vencimento, "%d/%m/%Y")
         dias_restantes = (vencimento_dt - datetime.now()).days
         return dias_restantes
@@ -62,14 +60,6 @@ class Produto:
             self.__preco_venda = novo_preco
         else:
             print("Preço de venda inválido!")
-
-    @property
-    def data_compra(self):
-        return self.__data_compra
-
-    @property
-    def vencimento(self):
-        return self.__vencimento
 
     @property
     def quantidade(self):
@@ -108,7 +98,6 @@ class ItemConsumo:
         return self.__produto.preco_venda * self.__quantidade
 
 
-
 class Carrinho:
     def __init__(self):
         self.__itens = []
@@ -122,7 +111,6 @@ class Carrinho:
 
     def calcular_total(self):
         return sum(item.calcular_subtotal() for item in self.__itens)
-
 
 
 class Pagamento:
@@ -156,7 +144,6 @@ class Pagamento:
     def carrinho(self):
         return self.__carrinho
 
-
     def resumo_pagamento(self):
         print(f"Nome: {self.__nome}")
         print(f"Categoria: {self.__categoria}")
@@ -172,31 +159,93 @@ class Pagamento:
         print("Pagamento via PIX disponível!")
 
 
-#Testando o código com um exemplo de compra:
+class SistemaCantina:
+    def __init__(self):
+        self.__estoque = []
+        self.__pagamentos = []
 
-from datetime import datetime
+    @property
+    def estoque(self):
+        return self.__estoque
 
+    def adicionar_produto(self, produto):
+        self.__estoque.append(produto)
+
+    @property
+    def pagamentos(self):
+        return self.__pagamentos
+
+    def registrar_pagamento(self, pagamento):
+        for item in pagamento.carrinho.itens:
+            item.produto.consumir(item.quantidade)
+        self.__pagamentos.append(pagamento)
+
+    def salvar_dados(self, arquivo="dados.pkl"):
+        with open(arquivo, "wb") as f:
+            pickle.dump(self.__pagamentos, f)
+
+    def carregar_dados(self, arquivo="dados.pkl"):
+        with open(arquivo, "rb") as f:
+            self.__pagamentos = pickle.load(f)
+
+    def relatorio_vendas(self):
+        total = sum(p.carrinho.calcular_total() for p in self.__pagamentos)
+        print(f"Relatório de Vendas: Total arrecadado R$ {total:.2f}")
+
+    def relatorio_consumo(self):
+        print("Relatório de Consumo:")
+        for pagamento in self.__pagamentos:
+            print(f"{pagamento.nome} ({pagamento.categoria}, {pagamento.curso}) comprou R$ {pagamento.carrinho.calcular_total():.2f}")
+            for item in pagamento.carrinho.itens:
+                produto = item.produto
+                dias = produto.dias_para_vencer()
+                if dias < 0:
+                    aviso = "Produto vencido!"
+                elif dias <= 3:
+                    aviso = f"Vence em {dias} dias"
+                else:
+                    aviso = f"vence em {dias} dias"
+                print(f"   - {produto.nome}: {aviso}")
+
+
+# ---------------- BLOCO PRINCIPAL ----------------
 
 if __name__ == "__main__":
-    p1 = Produto("salgadinho", 3.00, 5.00, "19/03/2026", "25/03/2026", 10)
+    sistema = SistemaCantina()
 
-    print(f"O produto {p1.nome} vence em {p1.dias_para_vencer()} dias.")
-    p2 = Produto("refrigerante", 4.50, 7.00, "19/03/2026", "30/03/2026", 20)
+    # Produtos reais da cantina
+    salgadinho_torcida = Produto("salgadinho_torcida", 2.00, 3.00, "23/03/2026", "25/09/2027", 50)
+    refrigerante = Produto("refrigerante", 1.50, 3.00, "23/03/2026", "15/01/2027", 100)
+    bombom = Produto("bombom", 1.00, 2.50, "23/03/2026", "10/10/2026", 80)
+    drops_freegels = Produto("drops_freegels", 2.00, 3.00, "23/03/2026", "11/01/2027", 60)
+    bolinho_recheado = Produto("bolinho_recheado", 2.50, 5.00, "23/03/2026", "15/07/2026", 40)
+    todinho = Produto("todinho", 3.50, 5.50, "23/03/2026", "08/09/2026", 70)
+    copo_cafe = Produto("copo_cafe", 2.50, 4.00, "23/03/2026", "23/03/2026", 200)
+    agua_com_gas = Produto("agua_com_gas", 1.50, 4.00, "23/03/2026", "20/11/2026", 90)
 
+    # Adicionando ao sistema
+    sistema.adicionar_produto(salgadinho_torcida)
+    sistema.adicionar_produto(refrigerante)
+    sistema.adicionar_produto(bombom)
+    sistema.adicionar_produto(drops_freegels)
+    sistema.adicionar_produto(bolinho_recheado)
+    sistema.adicionar_produto(todinho)
+    sistema.adicionar_produto(copo_cafe)
+    sistema.adicionar_produto(agua_com_gas)
+
+    print("Produtos cadastrados com sucesso!")
+
+    # Compra de teste
     carrinho = Carrinho()
-    carrinho.adicionar_item(ItemConsumo(p1, 2))
-    carrinho.adicionar_item(ItemConsumo(p2, 1))
+    carrinho.adicionar_item(ItemConsumo(salgadinho_torcida, 2))
+    carrinho.adicionar_item(ItemConsumo(refrigerante, 1))
+    carrinho.adicionar_item(ItemConsumo(bombom, 3))
 
-    # Gerar data/hora automática no momento da compra
-    data_hora = datetime.now().strftime("%d/%m/%Y %H:%M")
+    pagamento = Pagamento("João Silva", "aluno", "IA", datetime.now().strftime("%d/%m/%Y %H:%M"), carrinho)
+    sistema.registrar_pagamento(pagamento)
 
-    pagamento = Pagamento("João Silva", "aluno", "IA", data_hora, carrinho)
     pagamento.resumo_pagamento()
-
-    # Alterando quantidade com setter
-    p1.quantidade = 8
-    print(f"Nova quantidade de {p1.nome}: {p1.quantidade}")
-
-
+    sistema.relatorio_vendas()
+    sistema.relatorio_consumo()
 
 
