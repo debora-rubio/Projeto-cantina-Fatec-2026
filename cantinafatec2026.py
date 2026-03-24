@@ -248,4 +248,68 @@ if __name__ == "__main__":
     sistema.relatorio_vendas()
     sistema.relatorio_consumo()
 
+    from faker import Faker
+faker = Faker("pt_BR")
+
+if __name__ == "__main__":
+    sistema = SistemaCantina()
+
+    # Produtos reais da cantina
+    salgadinho_torcida = Produto("salgadinho_torcida", 2.00, 3.00, "23/03/2026", "25/09/2027", 50)
+    refrigerante = Produto("refrigerante", 1.50, 3.00, "23/03/2026", "15/01/2027", 100)
+    bombom = Produto("bombom", 1.00, 2.50, "23/03/2026", "10/10/2026", 80)
+    drops_freegels = Produto("drops_freegels", 2.00, 3.00, "23/03/2026", "11/01/2027", 60)
+    bolinho_recheado = Produto("bolinho_recheado", 2.50, 5.00, "23/03/2026", "15/07/2026", 40)
+    todinho = Produto("todinho", 3.50, 5.50, "23/03/2026", "08/09/2026", 70)
+    copo_cafe = Produto("copo_cafe", 2.50, 4.00, "23/03/2026", "23/03/2026", 200)
+    agua_com_gas = Produto("agua_com_gas", 1.50, 4.00, "23/03/2026", "20/11/2026", 90)
+
+    # Adicionando ao sistema
+    sistema.adicionar_produto(salgadinho_torcida)
+    sistema.adicionar_produto(refrigerante)
+    sistema.adicionar_produto(bombom)
+    sistema.adicionar_produto(drops_freegels)
+    sistema.adicionar_produto(bolinho_recheado)
+    sistema.adicionar_produto(todinho)
+    sistema.adicionar_produto(copo_cafe)
+    sistema.adicionar_produto(agua_com_gas)
+
+    print("Produtos cadastrados com sucesso!")
+
+    # Lista de nomes fixos sugeridos
+    nomes_fixos = ["Neia", "Dan", "Chateus", "Felipe", "Sara", "Paulo", "Aneci"]
+
+    # Simular 15 pagamentos fictícios
+    for i in range(15):
+        if i < len(nomes_fixos):
+            nome = nomes_fixos[i]
+        else:
+            nome = faker.name()
+
+        categoria = faker.random_element(["aluno", "professor", "colaborador"])
+        curso = faker.random_element(["IA", "ESG"])
+        data_hora = faker.date_time_this_year().strftime("%d/%m/%Y %H:%M")
+
+        carrinho = Carrinho()
+        # Escolhe 2 produtos aleatórios do estoque
+        carrinho.adicionar_item(ItemConsumo(faker.random_element(sistema.estoque), faker.random_int(min=1, max=3)))
+        carrinho.adicionar_item(ItemConsumo(faker.random_element(sistema.estoque), faker.random_int(min=1, max=2)))
+
+        pagamento = Pagamento(nome, categoria, curso, data_hora, carrinho)
+        sistema.registrar_pagamento(pagamento)
+        pagamento.resumo_pagamento()
+
+    # Salvar os dados com pickle
+    sistema.salvar_dados("dados_cantina.pkl")
+    print("Pagamentos salvos em dados_cantina.pkl")
+
+    # Carregar os dados depois
+    sistema.carregar_dados("dados_cantina.pkl")
+    print("Pagamentos carregados com sucesso!")
+
+    # Relatórios
+    sistema.relatorio_vendas()
+    sistema.relatorio_consumo()
+
+
 
