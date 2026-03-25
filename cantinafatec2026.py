@@ -1,7 +1,5 @@
 from datetime import datetime
 from faker import Faker
-
-# Importações atualizadas com os novos nomes de arquivos
 from produtos import Produto, ItemConsumo
 from financeiro import Carrinho, Pagamento
 from gerenciamento import SistemaCantina
@@ -11,7 +9,7 @@ faker = Faker("pt_BR")
 if __name__ == "__main__":
     sistema = SistemaCantina()
 
-    # Seus produtos reais
+    
     salgadinho_torcida = Produto("salgadinho_torcida", 2.00, 3.00, "23/03/2026", "25/09/2027", 50)
     refrigerante = Produto("refrigerante", 1.50, 3.00, "23/03/2026", "15/01/2027", 100)
     bombom = Produto("bombom", 1.00, 2.50, "23/03/2026", "10/10/2026", 80)
@@ -36,7 +34,8 @@ if __name__ == "__main__":
         nome = nomes_fixos[i] if i < len(nomes_fixos) else faker.name()
         categoria = faker.random_element(["aluno", "professor", "colaborador"])
         curso = "Sem Curso" if categoria == "colaborador" else faker.random_element(["IA", "ESG"])
-        data_hora = faker.date_time_this_year()  
+        data_hora = faker.date_time_this_year()
+         
 
         carrinho = Carrinho()
         carrinho.adicionar_item(ItemConsumo(faker.random_element(sistema.estoque), faker.random_int(min=1, max=3)))

@@ -1,5 +1,5 @@
 from datetime import datetime
-from produtos import ItemConsumo # Importação atualizada para o novo nome
+from produtos import ItemConsumo 
 
 class Carrinho:
     def __init__(self):

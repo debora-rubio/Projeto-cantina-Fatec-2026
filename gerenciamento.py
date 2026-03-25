@@ -1,4 +1,5 @@
 import pickle
+from datetime import datetime
 
 class SistemaCantina:
     def __init__(self):
@@ -11,6 +12,7 @@ class SistemaCantina:
 
     def adicionar_produto(self, produto):
         self.__estoque.append(produto)
+
 
     @property
     def pagamentos(self):
@@ -32,11 +34,15 @@ class SistemaCantina:
     def relatorio_vendas(self):
         total = sum(p.carrinho.calcular_total() for p in self.__pagamentos)
         print(f"Relatório de Vendas: Total arrecadado R$ {total:.2f}")
+    
 
     def relatorio_consumo(self):
         print("Relatório de Consumo:")
         for pagamento in self.__pagamentos:
-            print(f"{pagamento.nome} ({pagamento.categoria}, {pagamento.curso}) comprou R$ {pagamento.carrinho.calcular_total():.2f}")
+            data_hora = datetime.now()            
+            data_formatada = data_hora.strftime("%d/%m/%Y %H:%M")            
+            print(f"{pagamento.nome} ({pagamento.categoria}, {pagamento.curso}) em {data_formatada} comprou R$ {pagamento.carrinho.calcular_total():.2f}")
+            
             for item in pagamento.carrinho.itens:
                 produto = item.produto
                 dias = produto.dias_para_vencer()
@@ -47,3 +53,4 @@ class SistemaCantina:
                 else:
                     aviso = f"vence em {dias} dias"
                 print(f"   - {produto.nome}: {aviso}")
+

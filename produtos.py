@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Produto:
     def __init__(self, nome, preco_compra, preco_venda, data_compra, vencimento, quantidade):
         self.__nome = nome
