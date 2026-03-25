@@ -136,17 +136,35 @@ class Carrinho:
 
 
 
+from datetime import datetime
 
 class Pagamento:
     def __init__(self, nome, categoria, curso, data_hora, carrinho):
         self.__nome = nome
         self.__categoria = categoria
+        self.__curso = curso
         self.__data_hora = data_hora
-        if curso in ["IA", "ESG"]:
-            self.__curso = curso
-        else:
-            raise ValueError("Curso inválido! Escolha apenas IA ou ESG.")
         self.__carrinho = carrinho
+
+        if self.__categoria in ["aluno", "professor"]:
+            if self.__curso not in ["IA", "ESG"]:
+                raise ValueError("Curso inválido! Escolha apenas IA ou ESG.")
+        elif self.__categoria == "colaborador":
+            if self.__curso != "Sem Curso":
+                raise ValueError("Colaborador deve estar marcado como 'Sem Curso'.")
+
+    def resumo_pagamento(self):
+        print(f"Nome: {self.__nome}")
+        print(f"Categoria: {self.__categoria}")
+        print(f"Curso: {self.__curso}")
+        print(f"Data/Hora: {self.__data_hora.strftime('%d/%m/%Y %H:%M')}")
+        print("Itens consumidos:")
+        for item in self.__carrinho.itens:
+            produto = item.produto
+            qtd = item.quantidade
+            subtotal = item.calcular_subtotal()
+            print(f"- {produto.nome} | R$ {produto.preco_venda:.2f} x {qtd} = R$ {subtotal:.2f}")
+        print(f"Total: R$ {self.__carrinho.calcular_total():.2f}")
 
     @property
     def nome(self):
@@ -165,22 +183,10 @@ class Pagamento:
         return self.__data_hora
 
     @property
-    def carrinho(self):
+    def carrinho(self):  
         return self.__carrinho
 
-    def resumo_pagamento(self):
-        print(f"Nome: {self.__nome}")
-        print(f"Categoria: {self.__categoria}")
-        print(f"Curso: {self.__curso}")
-        print(f"Data/Hora: {self.__data_hora}")
-        print("Itens consumidos:")
-        for item in self.__carrinho.itens:
-            produto = item.produto
-            qtd = item.quantidade
-            subtotal = item.calcular_subtotal()
-            print(f"- {produto.nome} | R$ {produto.preco_venda:.2f} x {qtd} = R$ {subtotal:.2f}")
-        print(f"Total: R$ {self.__carrinho.calcular_total():.2f}")
-        print("Pagamento via PIX disponível!")
+
 
 
 class SistemaCantina:
@@ -265,7 +271,7 @@ if __name__ == "__main__":
     carrinho.adicionar_item(ItemConsumo(refrigerante, 1))
     carrinho.adicionar_item(ItemConsumo(bombom, 3))
 
-    pagamento = Pagamento("João Silva", "aluno", "IA", datetime.now().strftime("%d/%m/%Y %H:%M"), carrinho)
+    pagamento = Pagamento("João Silva", "aluno", "IA", datetime.now(), carrinho)
     sistema.registrar_pagamento(pagamento)
 
     pagamento.resumo_pagamento()
@@ -285,7 +291,7 @@ if __name__ == "__main__":
     drops_freegels = Produto("drops_freegels", 2.00, 3.00, "23/03/2026", "11/01/2027", 60)
     bolinho_recheado = Produto("bolinho_recheado", 2.50, 5.00, "23/03/2026", "15/07/2026", 40)
     todinho = Produto("todinho", 3.50, 5.50, "23/03/2026", "08/09/2026", 70)
-    copo_cafe = Produto("copo_cafe", 2.50, 4.00, "23/03/2026", "23/03/2026", 200)
+    copo_cafe = Produto("copo_cafe", 2.50, 4.00, "24/03/2026", "24/03/2026", 200)
     agua_com_gas = Produto("agua_com_gas", 1.50, 4.00, "23/03/2026", "20/11/2026", 90)
 
     # Adicionando ao sistema
@@ -311,8 +317,13 @@ if __name__ == "__main__":
             nome = faker.name()
 
         categoria = faker.random_element(["aluno", "professor", "colaborador"])
-        curso = faker.random_element(["IA", "ESG"])
-        data_hora = faker.date_time_this_year().strftime("%d/%m/%Y %H:%M")
+        if categoria == "colaborador":
+            curso = "Sem Curso"
+        else:
+            curso = faker.random_element(["IA", "ESG"])
+        data_hora = faker.date_time_this_year()  
+
+
 
         carrinho = Carrinho()
         # Escolhe 2 produtos aleatórios do estoque
