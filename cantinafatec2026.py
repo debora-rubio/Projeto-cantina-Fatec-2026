@@ -6,10 +6,11 @@ from gerenciamento import SistemaCantina
 
 faker = Faker("pt_BR")
 
-if __name__ == "__main__":
-    sistema = SistemaCantina()
+if __name__ == "__main__":    #código só será executado quando o arquivo for rodado diretamente, e não quando for importado.
+    sistema = SistemaCantina()    #classe(molde/forma). Esse objeto vai controlar o estoque, pagtos e vendas.
 
-    
+    #Cada linha cria um objeto da classe Produto,Cada produto tem atributos, como: nome, preço de compra, etc
+    #Classe → Produto, Objetos → cada item criado, Atributos → dados de cada produto
     salgadinho_torcida = Produto("salgadinho_torcida", 2.00, 3.00, "23/03/2026", "25/09/2027", 50)
     refrigerante = Produto("refrigerante", 1.50, 3.00, "23/03/2026", "15/01/2027", 100)
     bombom = Produto("bombom", 1.00, 2.50, "23/03/2026", "10/10/2026", 80)
@@ -18,6 +19,7 @@ if __name__ == "__main__":
     todinho = Produto("todinho", 3.50, 5.50, "23/03/2026", "08/09/2026", 70)
     agua_com_gas = Produto("agua_com_gas", 1.50, 4.00, "23/03/2026", "20/11/2026", 90)
 
+    #o sistema está chamando o metodo adicionar_produto para cada produto criado, adicionando-os no estoque.
     sistema.adicionar_produto(salgadinho_torcida)
     sistema.adicionar_produto(refrigerante)
     sistema.adicionar_produto(bombom)
@@ -30,7 +32,7 @@ if __name__ == "__main__":
 
     nomes_fixos = ["Neia", "Dan", "Chateus", "Felipe", "Sara", "Paulo", "Aneci"]
 
-    for i in range(15):
+    for i in range(10):          #vai simular 10 compras (10 iterações)
         nome = nomes_fixos[i] if i < len(nomes_fixos) else faker.name()
         categoria = faker.random_element(["aluno", "professor", "colaborador"])
         curso = "Sem Curso" if categoria == "colaborador" else faker.random_element(["IA", "ESG"])

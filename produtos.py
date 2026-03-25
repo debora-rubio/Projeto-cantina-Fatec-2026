@@ -1,11 +1,12 @@
 from datetime import datetime
 
 
-class Produto:
+#O construtor __init__ é o método que executa quando o objeto é criado.
+class Produto:   #molde/forma para criar produtos e cd produto criado é um objeto dessa classe. 
     def __init__(self, nome, preco_compra, preco_venda, data_compra, vencimento, quantidade):
         self.__nome = nome
         self.__preco_compra = preco_compra
-        self.__preco_venda = preco_venda
+        self.__preco_venda = preco_venda      
         self.__data_compra = data_compra
         self.__vencimento = vencimento
         self.__quantidade = quantidade
