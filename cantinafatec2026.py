@@ -30,6 +30,7 @@ class Produto:
         self.__vencimento = vencimento
         self.__quantidade = quantidade
 
+
     @property
     def nome(self):
         return self.__nome
