@@ -18,7 +18,6 @@ if __name__ == "__main__":
     drops_freegels = Produto("drops_freegels", 2.00, 3.00, "23/03/2026", "11/01/2027", 60)
     bolinho_recheado = Produto("bolinho_recheado", 2.50, 5.00, "23/03/2026", "15/07/2026", 40)
     todinho = Produto("todinho", 3.50, 5.50, "23/03/2026", "08/09/2026", 70)
-    copo_cafe = Produto("copo_cafe", 2.50, 4.00, "24/03/2026", "24/03/2026", 200)
     agua_com_gas = Produto("agua_com_gas", 1.50, 4.00, "23/03/2026", "20/11/2026", 90)
 
     sistema.adicionar_produto(salgadinho_torcida)
