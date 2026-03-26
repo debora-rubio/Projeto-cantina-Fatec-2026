@@ -31,6 +31,9 @@ class Carrinho:
     def calcular_total(self):
         return sum(item.calcular_subtotal() for item in self.__itens)
 
+
+
+
 class Pagamento:
     def __init__(self, nome, categoria, curso, data_hora, carrinho):
         self.__nome = nome
@@ -44,28 +47,42 @@ class Pagamento:
                 raise ValueError("Curso inválido! Escolha apenas IA ou ESG.")
         elif self.__categoria == "colaborador":
             if self.__curso != "Sem Curso":
-                raise ValueError("Colaborador deve estar marcado como 'Sem Curso'.")
+                raise ValueError("Colaborador deve estar como 'Sem Curso'.")
 
+    
     def resumo_pagamento(self):
         print(f"Nome: {self.__nome}")
         print(f"Categoria: {self.__categoria}")
         print(f"Curso: {self.__curso}")
         print(f"Data/Hora: {self.__data_hora.strftime('%d/%m/%Y %H:%M')}")
         print("Itens consumidos:")
+
         for item in self.__carrinho.itens:
             produto = item.produto
             qtd = item.quantidade
             subtotal = item.calcular_subtotal()
+
             print(f"- {produto.nome} | R$ {produto.preco_venda:.2f} x {qtd} = R$ {subtotal:.2f}")
+
         print(f"Total: R$ {self.__carrinho.calcular_total():.2f}")
 
+    
     @property
-    def nome(self): return self.__nome
+    def nome(self):
+        return self.__nome
+
     @property
-    def categoria(self): return self.__categoria
+    def categoria(self):
+        return self.__categoria
+
     @property
-    def curso(self): return self.__curso
+    def curso(self):
+        return self.__curso
+
     @property
-    def data_hora(self): return self.__data_hora
+    def data_hora(self):
+        return self.__data_hora
+
     @property
-    def carrinho(self): return self.__carrinho
+    def carrinho(self):
+        return self.__carrinho
