@@ -1,7 +1,7 @@
 import pickle
 from datetime import datetime
 
-class SistemaCantina:
+class SistemaCantina: #As listas são utilizadas internamente, mas encapsuladas dentro da classe.
     def __init__(self):
         self.__estoque = []
         self.__pagamentos = []
