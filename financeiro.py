@@ -3,22 +3,18 @@ from produtos import ItemConsumo
 
 class Carrinho:
     def __init__(self):
-        self.__itens = []
+        self.__itens = []          #encapsulamento privado do atributo itens do carrinho.
 
     def adicionar_item(self, item_consumo):
-        """Adiciona um novo produto ao carrinho"""
         self.__itens.append(item_consumo)
 
     def remover_item(self, indice):
-        """Remove um item do carrinho pelo índice"""
         if 0 <= indice < len(self.__itens):
-            removido = self.__itens.pop(indice)
-            print(f"Item removido: {removido.produto.nome}")
-        else:
-            print("Índice inválido!")
-
+            removido = self.__itens.pop(indice) # O encapsulamento foi usado para proteger a lista de itens do carrinhoo privado.
+            print(f"Item removido: {removido.produto.nome}") # permitindo que apenas métodos da classe façam alterações
+        else:                                                # evitando acesso direto e possíveis inconsistências.
+            print("Índice inválido!") 
     def alterar_item(self, indice, nova_quantidade):
-        """Altera a quantidade de um item já existente"""
         if 0 <= indice < len(self.__itens):
             self.__itens[indice]._ItemConsumo__quantidade = nova_quantidade
             print(f"Quantidade alterada para {nova_quantidade}")
@@ -27,11 +23,9 @@ class Carrinho:
 
     @property
     def itens(self):
-        """Permite consultar os itens do carrinho"""
         return self.__itens
 
     def calcular_total(self):
-        """Calcula o valor total da compra"""
         return sum(item.calcular_subtotal() for item in self.__itens)
 
 class Pagamento:
