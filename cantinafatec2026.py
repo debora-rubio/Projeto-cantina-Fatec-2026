@@ -26,6 +26,7 @@ if __name__ == "__main__":    #código só será executado quando o arquivo for 
     sistema.adicionar_produto(drops_freegels)
     sistema.adicionar_produto(bolinho_recheado)
     sistema.adicionar_produto(todinho)
+
     sistema.adicionar_produto(agua_com_gas)
 
     print("Produtos cadastrados com sucesso!")
@@ -55,3 +56,45 @@ if __name__ == "__main__":    #código só será executado quando o arquivo for 
 
     sistema.relatorio_vendas()
     sistema.relatorio_consumo()
+
+#menu administrador:
+while True:
+    print("\n=== MENU ADMINISTRADOR ===")
+    print("1 - Adicionar produto")
+    print("2 - Ver estoque")
+    print("3 - Relatório de vendas")
+    print("4 - Relatório de consumo")
+    print("5 - Sair")
+
+    opcao = input("Escolha uma opção: ")
+
+    if opcao == "1":
+        nome = input("Nome do produto: ")
+        preco_compra = float(input("Preço de compra: "))
+        preco_venda = float(input("Preço de venda: "))
+        data_compra = input("Data de compra (dd/mm/aaaa): ")
+        vencimento = input("Data de vencimento (dd/mm/aaaa): ")
+        quantidade = int(input("Quantidade: "))
+
+        produto = Produto(nome, preco_compra, preco_venda, data_compra, vencimento, quantidade)
+        sistema.adicionar_produto(produto)
+
+        print("Produto adicionado com sucesso!")
+
+    elif opcao == "2":
+        print("\n=== ESTOQUE ===")
+        for p in sistema.estoque:
+            print(f"{p.nome} | Qtd: {p.quantidade} | Vencimento: {p.vencimento}")
+
+    elif opcao == "3":
+        sistema.relatorio_vendas()
+
+    elif opcao == "4":
+        sistema.relatorio_consumo()
+
+    elif opcao == "5":
+        print("Saindo do sistema...")
+        break
+
+    else:
+        print("Opção inválida!")
