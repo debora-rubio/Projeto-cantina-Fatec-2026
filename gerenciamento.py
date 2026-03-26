@@ -11,8 +11,17 @@ class SistemaCantina: #As listas são utilizadas internamente, mas encapsuladas 
         return self.__estoque
 
     def adicionar_produto(self, produto):
-        self.__estoque.append(produto)
+        self.__estoque.append(produto) 
 
+
+    def obter_produto_fifo(self):
+        if self.__estoque:
+            return sorted(
+            self.__estoque,
+            key=lambda p: datetime.strptime(p.data_compra, "%d/%m/%Y")
+        )[0]
+        return None
+    
 
     @property
     def pagamentos(self):
@@ -20,8 +29,19 @@ class SistemaCantina: #As listas são utilizadas internamente, mas encapsuladas 
 
     def registrar_pagamento(self, pagamento):
         for item in pagamento.carrinho.itens:
-            item.produto.consumir(item.quantidade)
+            produto = self.obter_produto_fifo()
+
+        if produto:
+            if produto.consumir(item.quantidade):
+                if produto.quantidade == 0:
+                    self.__estoque.remove(produto)
+            else:
+                print("Estoque insuficiente!")
+        else:
+            print("Estoque vazio!")
+
         self.__pagamentos.append(pagamento)
+
 
     def salvar_dados(self, arquivo="dados.pkl"):
         with open(arquivo, "wb") as f:    #O pickle:transforma objetos Python em dados e esses dados são binários
