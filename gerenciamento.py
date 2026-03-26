@@ -35,6 +35,7 @@ class SistemaCantina:
         total = sum(p.carrinho.calcular_total() for p in self.__pagamentos)
         print(f"Relatório de Vendas: Total arrecadado R$ {total:.2f}")
     
+# RELATÓRIO DE CONSUMO:
 
     def relatorio_consumo(self):
         print("Relatório de Consumo:")
