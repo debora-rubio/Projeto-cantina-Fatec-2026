@@ -1,22 +1,25 @@
 from datetime import datetime
 from produtos import ItemConsumo 
 
+
 class Carrinho:
     def __init__(self):
-        self.__itens = []          #encapsulamento privado do atributo itens do carrinho.
+        self.__itens = []  # encapsulamento privado
 
     def adicionar_item(self, item_consumo):
         self.__itens.append(item_consumo)
 
     def remover_item(self, indice):
         if 0 <= indice < len(self.__itens):
-            removido = self.__itens.pop(indice) # O encapsulamento foi usado para proteger a lista de itens do carrinhoo privado.
-            print(f"Item removido: {removido.produto.nome}") # permitindo que apenas métodos da classe façam alterações
-        else:                                                # evitando acesso direto e possíveis inconsistências.
-            print("Índice inválido!") 
+            removido = self.__itens.pop(indice)
+            print(f"Item removido: {removido.produto.nome}")
+        else:
+            print("Índice inválido!")
+
     def alterar_item(self, indice, nova_quantidade):
         if 0 <= indice < len(self.__itens):
-            self.__itens[indice]._ItemConsumo__quantidade = nova_quantidade
+            
+            self.__itens[indice].quantidade = nova_quantidade   # Usando o setter da classe ItemConsumo.
             print(f"Quantidade alterada para {nova_quantidade}")
         else:
             print("Índice inválido!")
