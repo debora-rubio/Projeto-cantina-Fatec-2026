@@ -90,12 +90,14 @@ class Produto:
             print("Estoque insuficiente!")
             return False
 
+
+# carrinho de compras.
 class ItemConsumo:
-    def __init__(self, produto, quantidade):
+    def __init__(self, produto, quantidade):   #construtor da classe itemConsumo executa os objetos produto e quantidade.
         self.__produto = produto
         self.__quantidade = quantidade
 
-    @property
+    @property                           # com encapsulamento getter nos atributos(prod/quant), tornando-os privados.
     def produto(self):
         return self.__produto
 
@@ -103,5 +105,5 @@ class ItemConsumo:
     def quantidade(self):
         return self.__quantidade
 
-    def calcular_subtotal(self):
+    def calcular_subtotal(self):          #calcula o valor total desse item (preço do produto x quantidade).
         return self.__produto.preco_venda * self.__quantidade
