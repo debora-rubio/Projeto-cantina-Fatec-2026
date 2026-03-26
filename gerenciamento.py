@@ -24,12 +24,12 @@ class SistemaCantina:
         self.__pagamentos.append(pagamento)
 
     def salvar_dados(self, arquivo="dados.pkl"):
-        with open(arquivo, "wb") as f:
-            pickle.dump(self.__pagamentos, f)
+        with open(arquivo, "wb") as f:    #O pickle:transforma objetos Python em dados e esses dados são binários
+            pickle.dump(self.__pagamentos, f)                                #símbolos estranhos.
 
     def carregar_dados(self, arquivo="dados.pkl"):
-        with open(arquivo, "rb") as f:
-            self.__pagamentos = pickle.load(f)
+        with open(arquivo, "rb") as f:          #aqui vou abrir o arquivo para leitura no formato binario.(read binary).
+            self.__pagamentos = pickle.load(f) #pickle.load transf os dados binarios de volta para objetos python.
 
     def relatorio_vendas(self):
         total = sum(p.carrinho.calcular_total() for p in self.__pagamentos)
