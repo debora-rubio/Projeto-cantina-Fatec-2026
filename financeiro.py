@@ -43,8 +43,8 @@ class Pagamento:
         self.__carrinho = carrinho
 
         if self.__categoria in ["aluno", "professor"]:
-            if self.__curso not in ["IA", "ESG"]:
-                raise ValueError("Curso inválido! Escolha apenas IA ou ESG.")
+            if self.__curso not in ["IA", "ESG"]:     # raise mostra o erro e interrompe a execução do programa. 
+                raise ValueError("Curso inválido! Escolha apenas IA ou ESG.") # diferente do print que só mostra a mensagem de erro.
         elif self.__categoria == "colaborador":
             if self.__curso != "Sem Curso":
                 raise ValueError("Colaborador deve estar como 'Sem Curso'.")
